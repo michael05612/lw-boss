@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#14161c">
+<title>天堂W 王表</title>
+<link rel="stylesheet" href="css/style.css?v=2026-11-22.1">
+</head>
+<body>
+
+<header class="top">
+  <div class="top-row">
+    <h1>天堂W 王表</h1>
+    <div class="clock" id="clock">--:--:--</div>
+  </div>
+  <div class="top-row controls">
+    <button class="chip" id="eventBtn" aria-pressed="false" title="野外首領的逆襲：部分王重生加快 2 倍">
+      <span class="dot"></span><span id="eventLabel">減半活動：關</span>
+    </button>
+    <button class="chip cat" id="crossBtn" aria-pressed="false" title="關閉＝只顯示服內王；開啟＝服內王＋跨服王"><span class="dot"></span><span id="crossLabel">跨服：關</span></button>
+    <button class="icon-btn" id="settingsBtn" aria-label="設定">⚙</button>
+  </div>
+  <div class="top-row boot-row">
+    <div class="boot" id="bootInfo">開機 --</div>
+    <span class="sync" id="syncInfo"></span>
+    <button class="text-btn" id="maintBtn">臨時維修重置</button>
+  </div>
+</header>
+<button class="update-bar" id="updateBar" hidden>網站有新版本，點這裡更新</button>
+
+<main>
+  <section class="card">
+    <div class="card-head">
+      <h2>接下來 <span id="horizonLabel">15</span> 隻王</h2>
+    </div>
+    <ol class="timeline" id="timeline"></ol>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <h2>快速擊殺</h2>
+      <span class="hint">點一下＝現在擊殺　⋯＝補登記</span>
+    </div>
+    <div class="hot-grid" id="hot"></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <h2>全部王</h2>
+      <button class="text-btn" id="historyBtn">紀錄</button>
+    </div>
+    <input class="search" id="search" type="search" placeholder="搜尋王名或簡稱（例：卡王、蟻后）" autocomplete="off">
+    <div id="groups"></div>
+  </section>
+
+  <p class="footnote">王表資料版本 <span id="dataVer"></span>。數值部分來自 2023 年玩家整理，請在「設定」核對修正。所有時間為台灣時間。</p>
+</main>
+
+<!-- 單一王操作 -->
+<div class="sheet-backdrop" id="sheetBackdrop" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <div class="sheet-head">
+      <div>
+        <h3 id="sheetTitle">王名</h3>
+        <div class="sheet-sub" id="sheetSub"></div>
+      </div>
+      <button class="icon-btn" data-close aria-label="關閉">✕</button>
+    </div>
+    <button class="btn primary big" id="sheetKillNow">擊殺（現在）</button>
+    <div class="backfill">
+      <div class="bf-head"><b>補登記</b><span>王已經被打掉了？選大概的死亡時間</span></div>
+      <div class="bf-chips" id="bfChips"></div>
+      <div class="bf-time">
+        <select id="bfDay" aria-label="日期"><option value="0">今天</option><option value="-1">昨天</option></select>
+        <select id="bfH" aria-label="時"></select><span class="colon">:</span><select id="bfM" aria-label="分"></select>
+      </div>
+      <div class="bf-preview" id="bfPreview"></div>
+      <button class="btn big" id="bfSave">確認補登記</button>
+    </div>
+  </div>
+</div>
+
+<!-- 設定 / 紀錄 -->
+<div class="modal-backdrop" id="modalBackdrop" hidden>
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <h3 id="modalTitle">設定</h3>
+      <button class="icon-btn" data-close aria-label="關閉">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden>
+  <span id="toastMsg"></span>
+  <button class="text-btn" id="toastUndo">復原</button>
+</div>
+
+<!-- ?v= 由 release.ps1 自動更新，確保大家拿到新版檔案 -->
+<script src="js/version.js?v=2026-11-22.1"></script>
+<script src="js/config.js?v=2026-11-22.1"></script>
+<script src="js/data.js?v=2026-11-22.1"></script>
+<script src="js/store.js?v=2026-11-22.1"></script>
+<script src="js/engine.js?v=2026-11-22.1"></script>
+<script src="js/app.js?v=2026-11-22.1"></script>
+</body>
+</html>

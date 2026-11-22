@@ -1,0 +1,57 @@
+{
+  "rules": {
+    "roomKeys": {
+      "$room": {
+        ".read": false,
+        ".write": "auth != null && !data.exists() && newData.isString() && newData.val().length >= 16 && $room.length >= 16 && $room.length <= 40"
+      }
+    },
+    "adminClaims": {
+      "$room": {
+        "$uid": {
+          ".read": "auth != null && auth.uid === $uid",
+          ".write": "auth != null && auth.uid === $uid",
+          ".validate": "newData.isString() && newData.val() === root.child('roomKeys').child($room).val()"
+        }
+      }
+    },
+    "rooms": {
+      "$room": {
+        ".read": "auth != null && root.child('roomKeys').child($room).exists()",
+        "meta": {
+          ".write": "auth != null && root.child('adminClaims').child($room).child(auth.uid).exists() && root.child('adminClaims').child($room).child(auth.uid).val() === root.child('roomKeys').child($room).val()"
+        },
+        "settings": {
+          ".write": "auth != null && root.child('adminClaims').child($room).child(auth.uid).exists() && root.child('adminClaims').child($room).child(auth.uid).val() === root.child('roomKeys').child($room).val()",
+          "eventOn": {
+            ".write": "auth != null && root.child('roomKeys').child($room).exists()",
+            ".validate": "newData.isBoolean()"
+          }
+        },
+        "bossOverrides": {
+          ".write": "auth != null && root.child('adminClaims').child($room).child(auth.uid).exists() && root.child('adminClaims').child($room).child(auth.uid).val() === root.child('roomKeys').child($room).val()"
+        },
+        "fixedOverrides": {
+          ".write": "auth != null && root.child('adminClaims').child($room).child(auth.uid).exists() && root.child('adminClaims').child($room).child(auth.uid).val() === root.child('roomKeys').child($room).val()"
+        },
+        "records": {
+          ".write": "auth != null && root.child('adminClaims').child($room).child(auth.uid).exists() && root.child('adminClaims').child($room).child(auth.uid).val() === root.child('roomKeys').child($room).val()",
+          ".indexOn": ["t"],
+          "$id": {
+            ".write": "auth != null && root.child('roomKeys').child($room).exists() && ((!data.exists() && newData.child('uid').val() === auth.uid) || (data.exists() && !newData.exists() && (data.child('uid').val() === auth.uid || (root.child('adminClaims').child($room).child(auth.uid).exists() && root.child('adminClaims').child($room).child(auth.uid).val() === root.child('roomKeys').child($room).val()))))",
+            ".validate": "newData.hasChildren(['bossId', 'type', 't', 'uid']) && newData.child('bossId').isString() && newData.child('bossId').val().length <= 40 && newData.child('type').isString() && newData.child('type').val().length <= 10 && newData.child('t').isNumber() && newData.child('t').val() <= now + 120000 && newData.child('t').val() >= now - 259200000 && (!newData.child('by').exists() || (newData.child('by').isString() && newData.child('by').val().length <= 24))"
+          }
+        },
+        "boots": {
+          ".write": "auth != null && root.child('adminClaims').child($room).child(auth.uid).exists() && root.child('adminClaims').child($room).child(auth.uid).val() === root.child('roomKeys').child($room).val()",
+          ".indexOn": ["t"],
+          "$id": {
+            ".write": "auth != null && root.child('roomKeys').child($room).exists() && ((!data.exists() && newData.child('uid').val() === auth.uid) || (data.exists() && !newData.exists() && (data.child('uid').val() === auth.uid || (root.child('adminClaims').child($room).child(auth.uid).exists() && root.child('adminClaims').child($room).child(auth.uid).val() === root.child('roomKeys').child($room).val()))))",
+            ".validate": "newData.hasChildren(['t', 'uid']) && newData.child('t').isNumber() && newData.child('t').val() <= now + 120000 && newData.child('t').val() >= now - 259200000"
+          }
+        },
+        "$other": { ".validate": false }
+      }
+    }
+  }
+}
