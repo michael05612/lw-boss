@@ -112,6 +112,7 @@ window.LW_DEFAULT_SETTINGS = {
   eventOn: false,       // 「野外首領的逆襲」重生加快 2 倍
   showCross: false,     // 顯示跨服王（含競技場）；關閉＝只顯示服內王
   keepAwake: false,     // 開著網頁時保持螢幕不鎖定
+  theme: 'dark',        // 外觀：dark 深色／light 淺色／auto 跟隨系統
 };
 // 上面設定中，resetWeekday / resetTime / graceMin / eventOn 是全公會共用（雲端模式只有管理員能改，eventOn 大家都能切）；
 // 其餘是個人設定，只存在自己的裝置。

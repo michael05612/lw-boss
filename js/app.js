@@ -459,6 +459,9 @@
           <label><input type="checkbox" data-s="sound" ${s.sound ? 'checked' : ''}> 聲音</label>
           <button class="btn sm" id="s-perm">開啟系統通知</button>
           <div class="muted">提醒只在這個網頁開著時有效；手機鎖定螢幕或切到別的 App 可能不會響。</div></div>
+        <label for="s-theme">外觀</label><div><select id="s-theme" data-s="theme">
+          ${[['dark', '深色'], ['light', '淺色'], ['auto', '跟隨手機／電腦設定']].map(([v, n]) => `<option value="${v}" ${(s.theme || 'dark') === v ? 'selected' : ''}>${n}</option>`).join('')}
+        </select></div>
         <label for="s-awake">保持螢幕開啟</label><div><input id="s-awake" type="checkbox" data-s="keepAwake" ${s.keepAwake ? 'checked' : ''}> 開著網頁時不讓手機自動鎖定（掛機盯王用）</div>
       </div>
 
@@ -548,6 +551,7 @@
       const k = el.dataset.s;
       Store.setSetting(k, el.type === 'checkbox' ? el.checked : ('num' in el.dataset ? Number(el.value) : el.value.trim()));
       if (k === 'keepAwake') applyWakeLock();
+      if (k === 'theme') applyTheme();
     }));
     root.querySelectorAll('[data-copy]').forEach(b => b.onclick = async () => {
       copyText(b.dataset.copy === 'admin' ? await Store.adminLink() : Store.memberLink());
@@ -628,6 +632,14 @@
       if (cloud && prompt('請輸入「清除」兩個字確認') !== '清除') return;
       Store.clearAll(); closeModal();
     };
+  }
+
+  // ── 外觀（深色／淺色）──────────────────────────────
+  // index.html 開頭有一小段先套用，避免打開時先閃一下白色
+  function applyTheme() {
+    const t = Engine.settings(Store.state).theme || 'dark';
+    if (t === 'auto') delete document.documentElement.dataset.theme;
+    else document.documentElement.dataset.theme = t;
   }
 
   // ── 保持螢幕開啟 ───────────────────────────────────
@@ -715,6 +727,7 @@
   // ── 啟動 ───────────────────────────────────────────
   Store.subscribe(() => { render(true); askNickname(); });
   render(true);
+  applyTheme();
   applyWakeLock();
   setInterval(() => render(false), 1000);
   setInterval(checkVersion, 5 * MIN);
