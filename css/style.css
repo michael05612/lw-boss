@@ -168,13 +168,30 @@ h2 { font-size: 16px; margin: 0; }
   width: 100%; padding: 9px 12px; border-radius: 8px; border: 1px solid var(--border);
   background: var(--surface-2); margin-bottom: 8px;
 }
-details.group { border-top: 1px solid var(--border); }
+/* 分組標題：有底色、左側色條、右邊明顯的展開鈕，和王的列表分開 */
+details.group { margin-top: 8px; }
 details.group > summary {
-  list-style: none; padding: 10px 4px; font-weight: 600; display: flex; justify-content: space-between; cursor: pointer;
+  list-style: none; cursor: pointer; user-select: none;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 12px; border-radius: 8px;
+  background: var(--accent-soft); border-left: 4px solid var(--accent);
+  color: var(--accent); font-weight: 700;
 }
+details.group > summary:hover { filter: brightness(1.08); }
 details.group > summary::-webkit-details-marker { display: none; }
-details.group > summary::after { content: "▾"; color: var(--muted); }
-details.group[open] > summary::after { content: "▴"; }
+details.group > summary .cnt {
+  margin-left: 8px; font-size: 12px; font-weight: 600; color: var(--muted);
+}
+details.group > summary .chev {
+  width: 28px; height: 28px; border-radius: 50%; flex: none;
+  display: grid; place-items: center;
+  border: 1px solid var(--accent); color: var(--accent);
+}
+details.group > summary .chev::before { content: "▾"; font-size: 14px; line-height: 1; transition: transform .15s; }
+details.group[open] > summary .chev::before { transform: rotate(180deg); }
+details.group[open] > summary { border-radius: 8px 8px 0 0; }
+details.group > .row:first-of-type { border-top: 0; }
+details.group > .row { padding-left: 10px; padding-right: 6px; }
 .row {
   display: grid; grid-template-columns: 1fr auto auto; gap: 6px; align-items: center;
   padding: 6px 4px; border-top: 1px dashed var(--border);

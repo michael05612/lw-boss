@@ -39,6 +39,10 @@
     }
     return '';
   }
+  // 這一輪時間是誰按擊殺算出來的（沒有暱稱就不顯示）
+  function killerText(st) {
+    return st.source === 'kill' && st.last && st.last.by ? ' · ' + st.last.by + ' 回報' : '';
+  }
 
   function stClass(st, now) {
     if (st.status === 'alive') return 'alive';
@@ -212,10 +216,10 @@
       const h = k === 'unset' ? '未設定間隔' : `${k.slice(4)} 小時`;
       const open = q || openGroups.has(k) ? 'open' : '';
       return `<details class="group" data-group="${k}" ${open}>
-        <summary>${h}（${list.length}）</summary>
+        <summary><span>${h}<span class="cnt">${list.length} 隻</span></span><span class="chev" aria-hidden="true"></span></summary>
         ${list.map(st => `<div class="row">
           <div class="info"><b>${esc(st.boss.label)}</b>${view.s.eventOn && st.boss.event ? '<span class="tag ev">加快</span>' : ''}
-            <small>${esc(statusText(st))}${st.nextT ? ' · <span data-cd="' + st.nextT + '"></span>' : ''}${st.boss.region ? ' · ' + esc(st.boss.region) : ''}</small></div>
+            <small>${esc(statusText(st))}${st.nextT ? ' · <span data-cd="' + st.nextT + '"></span>' : ''}${st.boss.region ? ' · ' + esc(st.boss.region) : ''}${esc(killerText(st))}</small></div>
           <button class="btn sm primary" data-kill="${st.boss.id}" ${st.status === 'unset' ? 'disabled' : ''}>擊殺</button>
           <button class="btn sm" data-open="${st.boss.id}" aria-label="${esc(st.boss.label)} 補登記">⋯</button>
         </div>`).join('')}
